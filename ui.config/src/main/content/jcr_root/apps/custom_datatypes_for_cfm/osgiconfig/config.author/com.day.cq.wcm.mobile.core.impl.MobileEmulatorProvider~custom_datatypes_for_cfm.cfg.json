@@ -1,0 +1,6 @@
+{
+  "mobile.resourceTypes": [
+    "custom_datatypes_for_cfm/components/page"
+  ],
+  "README": "Indicate which page resource types should display the mobile emulators."
+}
