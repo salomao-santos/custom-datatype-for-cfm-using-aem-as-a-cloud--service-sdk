@@ -1,0 +1,7 @@
+{
+    "scripts": [
+        "create path (sling:OrderedFolder) /content/dam/custom_datatypes_for_cfm",
+        "create path (nt:unstructured) /content/dam/custom_datatypes_for_cfm/jcr:content",
+        "set properties on /content/dam/custom_datatypes_for_cfm/jcr:content\n  set cq:conf{String} to /conf/custom_datatypes_for_cfm\n  set jcr:title{String} to \"Custom Datatypes for CFM\"\nend"
+    ]
+}
