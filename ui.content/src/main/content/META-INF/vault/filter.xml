@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workspaceFilter version="1.0">
+    <filter root="/conf/custom_datatypes_for_cfm" mode="merge"/>
+    <filter root="/content/custom_datatypes_for_cfm" mode="merge"/>
+    <filter root="/content/dam/custom_datatypes_for_cfm" mode="merge">
+        <exclude pattern="/content/dam/custom_datatypes_for_cfm(/.*)?"/>
+        <include pattern="/content/dam/custom_datatypes_for_cfm/jcr:content(/.*)?"/>
+    </filter>
+    <filter root="/content/dam/custom_datatypes_for_cfm/asset.jpg" mode="merge"/>
+    <filter root="/content/experience-fragments/custom_datatypes_for_cfm" mode="merge"/>
+</workspaceFilter>
