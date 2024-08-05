@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <workspaceFilter version="1.0">
-    <filter root="/apps/custom_datatypes_for_cfm/clientlibs"/>
-    <filter root="/apps/custom_datatypes_for_cfm/components"/>
-    <filter root="/apps/custom_datatypes_for_cfm/i18n"/>
+    <filter root="/apps/custom_datatypes_for_cfm" />
+    <filter root="/apps/cq" mode="merge"/>
+    <filter root="/apps/dam"/>
+    <filter root="/apps/settings/dam" mode="update"/>
 </workspaceFilter>
