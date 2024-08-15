@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:primaryType="nt:unstructured">
+    <items jcr:primaryType="nt:unstructured">
+        <cfx-picture-field
+                jcr:primaryType="nt:unstructured"
+                fieldIcon="image"
+                fieldMetaTypes="picture-field"
+                fieldProperties="[labelfield,requiredfield,maptopropertyfield]"
+                fieldPropResourceType="dam/cfm/models/editor/components/datatypes/field"
+                fieldResourceType="custom_datatypes_for_cfm/editor/components/form/picture-field"
+                fieldTitle="Picture Field"
+                listOrder="55"
+                renderType="text"
+                valueType="string"/>
+    </items>
+</jcr:root>

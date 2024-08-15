@@ -1,0 +1,6 @@
+<div data-sly-use.model="com.aem.custom_datatypes_for_cfm.core.models.CfxPictureField"
+     class="htl-picturefield" style="display: flex" >
+
+    <div data-sly-include="/libs/dam/cfm/models/editor/components/contentreference/contentreference.html" style="flex: 1;"></div>
+    <img src="${model.thumbnail}" width="140" height="100" style="object-fit: contain; margin: 5px; border:1px solid lightgray;" class="html-picturefield-preview-${model.name}">
+</div>
