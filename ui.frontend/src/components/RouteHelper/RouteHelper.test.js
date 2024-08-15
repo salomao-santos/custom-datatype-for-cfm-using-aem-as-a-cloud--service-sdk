@@ -1,31 +1,10 @@
-/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- ~ Copyright 2020 Adobe Systems Incorporated
- ~
- ~ Licensed under the Apache License, Version 2.0 (the "License");
- ~ you may not use this file except in compliance with the License.
- ~ You may obtain a copy of the License at
- ~
- ~     http://www.apache.org/licenses/LICENSE-2.0
- ~
- ~ Unless required by applicable law or agreed to in writing, software
- ~ distributed under the License is distributed on an "AS IS" BASIS,
- ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- ~ See the License for the specific language governing permissions and
- ~ limitations under the License.
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-
-import { ModelManager } from '@adobe/aem-spa-page-model-manager';
-import { configure, shallow } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import { render, screen } from '@testing-library/react';
+import { BrowserRouter, MemoryRouter, Route } from 'react-router-dom';
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import { Route } from 'react-router';
-import { BrowserRouter, MemoryRouter } from 'react-router-dom';
-import ShallowRenderer from 'react-test-renderer/shallow';
-import sinon from 'sinon';
+import { ModelManager } from '@adobe/aem-spa-page-model-manager';
 import { CompositeComponent, withRoute } from './RouteHelper';
-
-configure({ adapter: new Adapter() });
+import '@testing-library/jest-dom/extend-expect';
+import sinon from 'sinon';
 
 describe('RouterHelper ->', () => {
   const ROUTE_CONTENT_CLASS_NAME = 'route-content';
@@ -152,22 +131,22 @@ describe('RouterHelper ->', () => {
       };
 
       let WrappedComponent = withRoute(RouteContent);
-      ReactDOM.render(
+      render(
         <BrowserRouter>
           <WrappedComponent cqModel={cqModel} />
         </BrowserRouter>,
-        rootNode
+        { container: rootNode }
       );
 
       expect(
-        rootNode.querySelector('.' + ROUTE_CONTENT_CLASS_NAME)
-      ).not.toBeNull();
+        screen.getByClassName(ROUTE_CONTENT_CLASS_NAME)
+      ).toBeInTheDocument();
     });
 
     it('should render the correct component', () => {
-      const wrapper = shallow(<withRoute />);
-      const pathMap = wrapper.find(Route).reduce((pathMap, route) => {
-        const routeProps = route.props();
+      const { container } = render(<withRoute />);
+      const pathMap = Array.from(container.querySelectorAll('Route')).reduce((pathMap, route) => {
+        const routeProps = route.props;
         pathMap[routeProps.path] = routeProps.component;
         return pathMap;
       }, {});
@@ -183,29 +162,27 @@ describe('RouterHelper ->', () => {
 
       let WrappedComponent = withRoute(RouteContent, 'extension');
 
-      const renderer = new ShallowRenderer();
-      renderer.render(
+      const { asFragment } = render(
         <BrowserRouter>
           <WrappedComponent cqPath={CUSTOM_ROUTE_PATH} cqModel={cqModel} />
         </BrowserRouter>
       );
-      const result = renderer.getRenderOutput();
 
-      expect(result).toMatchInlineSnapshot(PATH_AND_PROPS_INLINE_SNAPSHOT);
+      expect(asFragment()).toMatchInlineSnapshot(PATH_AND_PROPS_INLINE_SNAPSHOT);
     });
 
     it('should render page without extension', () => {
       let WrappedComponent = withRoute(RouteContent);
-      ReactDOM.render(
+      render(
         <MemoryRouter initialEntries={[CUSTOM_ROUTE_PATH]}>
           <WrappedComponent cqPath={CUSTOM_ROUTE_PATH} />
         </MemoryRouter>,
-        rootNode
+        { container: rootNode }
       );
 
       expect(
-        rootNode.querySelector('.' + ROUTE_CONTENT_CLASS_NAME)
-      ).toBeTruthy();
+        screen.getByClassName(ROUTE_CONTENT_CLASS_NAME)
+      ).toBeInTheDocument();
     });
 
     it('should encapsulate and hide the wrapped component in a route', () => {
@@ -215,14 +192,14 @@ describe('RouterHelper ->', () => {
       };
 
       let WrappedComponent = withRoute(RouteContent);
-      ReactDOM.render(
+      render(
         <BrowserRouter>
           <WrappedComponent cqPath={'path/test'} cqModel={cqModel} />
         </BrowserRouter>,
-        rootNode
+        { container: rootNode }
       );
 
-      expect(rootNode.querySelector('.' + ROUTE_CONTENT_CLASS_NAME)).toBeNull();
+      expect(screen.queryByClassName(ROUTE_CONTENT_CLASS_NAME)).toBeNull();
     });
 
     it('should set the correct props in route', () => {
@@ -231,16 +208,13 @@ describe('RouterHelper ->', () => {
         title: PAGE_TITLE
       };
 
-      const renderer = new ShallowRenderer();
-      let WrappedComponent = withRoute(RouteContent);
-      renderer.render(
+      const { asFragment } = render(
         <BrowserRouter>
           <WrappedComponent cqModel={cqModel} />
         </BrowserRouter>
       );
-      const result = renderer.getRenderOutput();
 
-      expect(result).toMatchInlineSnapshot(PROPS_INLINE_SNAPSHOT);
+      expect(asFragment()).toMatchInlineSnapshot(PROPS_INLINE_SNAPSHOT);
     });
 
     it('should set the correct path and props in route', () => {
@@ -249,16 +223,13 @@ describe('RouterHelper ->', () => {
         title: PAGE_TITLE
       };
 
-      const renderer = new ShallowRenderer();
-      let WrappedComponent = withRoute(RouteContent);
-      renderer.render(
+      const { asFragment } = render(
         <BrowserRouter>
           <WrappedComponent cqPath={CUSTOM_ROUTE_PATH} cqModel={cqModel} />
         </BrowserRouter>
       );
-      const result = renderer.getRenderOutput();
 
-      expect(result).toMatchInlineSnapshot(PATH_AND_PROPS_INLINE_SNAPSHOT);
+      expect(asFragment()).toMatchInlineSnapshot(PATH_AND_PROPS_INLINE_SNAPSHOT);
     });
   });
 });

@@ -1,25 +1,10 @@
-/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- ~ Copyright 2020 Adobe Systems Incorporated
- ~
- ~ Licensed under the Apache License, Version 2.0 (the "License");
- ~ you may not use this file except in compliance with the License.
- ~ You may obtain a copy of the License at
- ~
- ~     http://www.apache.org/licenses/LICENSE-2.0
- ~
- ~ Unless required by applicable law or agreed to in writing, software
- ~ distributed under the License is distributed on an "AS IS" BASIS,
- ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- ~ See the License for the specific language governing permissions and
- ~ limitations under the License.
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-
-import { ModelManager } from '@adobe/aem-spa-page-model-manager';
+import { render, screen } from '@testing-library/react';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { ModelManager } from '@adobe/aem-spa-page-model-manager';
+import Text from './Text';
+import '@testing-library/jest-dom/extend-expect';
 import sinon from 'sinon';
 import extractModelId from '../../utils/extract-model-id';
-import Text from './Text';
 
 describe('Text ->', () => {
   const ROOT_NODE_CLASS_NAME = 'route-node';
@@ -60,64 +45,64 @@ describe('Text ->', () => {
 
   it('should render the text component with no parameter', () => {
     expect(rootNode.childElementCount).toEqual(0);
-    ReactDOM.render(<Text />, rootNode);
+    render(<Text />, { container: rootNode });
 
     expect(rootNode.childElementCount).toEqual(1);
 
     expect(
-      rootNode.querySelector(RTE_EDIT_ELEMENT_DATA_ATTR_SELECTOR)
+      screen.queryBySelector(RTE_EDIT_ELEMENT_DATA_ATTR_SELECTOR)
     ).toBeNull();
   });
 
   it('should render the text component that contains the provided text as a string', () => {
     expect(rootNode.childElementCount).toEqual(0);
-    ReactDOM.render(<Text text={TEXT_DATA} />, rootNode);
+    render(<Text text={TEXT_DATA} />, { container: rootNode });
 
     expect(rootNode.childElementCount).toEqual(1);
 
     expect(
-      rootNode.querySelector(RTE_EDIT_ELEMENT_DATA_ATTR_SELECTOR)
+      screen.queryBySelector(RTE_EDIT_ELEMENT_DATA_ATTR_SELECTOR)
     ).toBeNull();
     expect(rootNode.firstChild.innerHTML).toContain(TEXT_DATA_STR);
   });
 
   it('should render the text component that contains the provided text as a DOM structure', () => {
     expect(rootNode.childElementCount).toEqual(0);
-    ReactDOM.render(<Text text={TEXT_DATA} richText={true} />, rootNode);
+    render(<Text text={TEXT_DATA} richText={true} />, { container: rootNode });
 
     expect(rootNode.childElementCount).toEqual(1);
 
     expect(
-      rootNode.querySelector(RTE_EDIT_ELEMENT_DATA_ATTR_SELECTOR)
+      screen.queryBySelector(RTE_EDIT_ELEMENT_DATA_ATTR_SELECTOR)
     ).not.toBeNull();
-    expect(rootNode.querySelector('.' + TEXT_DATA_CLASS_NAME).innerHTML).toBe(
+    expect(screen.getByClassName(TEXT_DATA_CLASS_NAME).innerHTML).toBe(
       TEXT_DATA_STR
     );
   });
 
   it('should render the text as a rich text component', () => {
     expect(rootNode.childElementCount).toEqual(0);
-    ReactDOM.render(<Text richText={true} />, rootNode);
+    render(<Text richText={true} />, { container: rootNode });
 
     expect(rootNode.childElementCount).toEqual(1);
 
     expect(
-      rootNode.querySelector(RTE_EDIT_ELEMENT_DATA_ATTR_SELECTOR)
+      screen.queryBySelector(RTE_EDIT_ELEMENT_DATA_ATTR_SELECTOR)
     ).not.toBeNull();
   });
 
   it('should render the text as a rich text component with a given id', () => {
     expect(rootNode.childElementCount).toEqual(0);
 
-    ReactDOM.render(<Text cqPath={CONTENT_PATH} richText={true} />, rootNode);
+    render(<Text cqPath={CONTENT_PATH} richText={true} />, { container: rootNode });
 
     expect(rootNode.childElementCount).toEqual(1);
 
     expect(
-      rootNode.querySelector(RTE_EDIT_ELEMENT_DATA_ATTR_SELECTOR)
+      screen.queryBySelector(RTE_EDIT_ELEMENT_DATA_ATTR_SELECTOR)
     ).not.toBeNull();
     expect(
-      rootNode.querySelector('#' + extractModelId(CONTENT_PATH))
+      screen.getById(extractModelId(CONTENT_PATH))
     ).not.toBeNull();
   });
 });

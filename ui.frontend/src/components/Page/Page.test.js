@@ -1,24 +1,9 @@
-/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- ~ Copyright 2020 Adobe Systems Incorporated
- ~
- ~ Licensed under the Apache License, Version 2.0 (the "License");
- ~ you may not use this file except in compliance with the License.
- ~ You may obtain a copy of the License at
- ~
- ~     http://www.apache.org/licenses/LICENSE-2.0
- ~
- ~ Unless required by applicable law or agreed to in writing, software
- ~ distributed under the License is distributed on an "AS IS" BASIS,
- ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- ~ See the License for the specific language governing permissions and
- ~ limitations under the License.
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-
-import { ModelManager } from '@adobe/aem-spa-page-model-manager';
+import { render, screen } from '@testing-library/react';
 import React from 'react';
-import ReactDOM from 'react-dom';
-import sinon from 'sinon';
+import { ModelManager } from '@adobe/aem-spa-page-model-manager';
 import Page from './Page';
+import '@testing-library/jest-dom/extend-expect';
+import sinon from 'sinon';
 
 describe('Page ->', () => {
   const ROOT_NODE_CLASS_NAME = 'route-node';
@@ -50,22 +35,22 @@ describe('Page ->', () => {
 
   it('should render the page component with no parameter', () => {
     expect(rootNode.childElementCount).toEqual(0);
-    ReactDOM.render(<Page />, rootNode);
+    render(<Page />, { container: rootNode });
 
     expect(rootNode.childElementCount).toEqual(1);
 
-    expect(rootNode.querySelector('.' + PAGE_CLASS_NAME)).not.toBeNull();
+    expect(screen.getByClassName(PAGE_CLASS_NAME)).toBeInTheDocument();
   });
 
-  it('should render the page component with no parameter', () => {
+  it('should render the page component with extra class names', () => {
     const EXTRA_CLASS_NAMES = 'test-class-names';
 
     expect(rootNode.childElementCount).toEqual(0);
 
-    ReactDOM.render(<Page cssClassNames={EXTRA_CLASS_NAMES} />, rootNode);
+    render(<Page cssClassNames={EXTRA_CLASS_NAMES} />, { container: rootNode });
 
     expect(rootNode.childElementCount).toEqual(1);
 
-    expect(rootNode.querySelector('.' + EXTRA_CLASS_NAMES)).not.toBeNull();
+    expect(screen.getByClassName(EXTRA_CLASS_NAMES)).toBeInTheDocument();
   });
 });
